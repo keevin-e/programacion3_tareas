@@ -6,6 +6,7 @@ class listaDoble:
         self.inicio = None
         self.grafica = graphviz_class()
 
+    #explicacion: se recorre la lista desde el inicio, se adiciona cada nodo a la grafica, si el nodo tiene un siguiente, se adiciona la conexion entre el nodo y su siguiente, se guarda la grafica al final
     def actualizar_grafica(self):
         self.grafica.limpiar()
         temporal = self.inicio
