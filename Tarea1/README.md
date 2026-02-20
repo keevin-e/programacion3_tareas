@@ -1,3 +1,8 @@
+# Integrantes para esta tarea
+Kevin Eduardo Ruiz Alvarez
+9490-25-10092
+participación: 100%
+
 # Tarea 1
 
 Instrucciones específicas para ejecutar esta tarea.
