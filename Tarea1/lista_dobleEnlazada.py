@@ -11,7 +11,6 @@ class listaDoble:
         self.grafica.limpiar()
         temporal = self.inicio
         while temporal is not None:
-            self.grafica.adicion_nodo(temporal.carnet)
             if temporal.siguiente is not None:
                 self.grafica.adicion_conexion(temporal.carnet, temporal.siguiente.carnet)
                 self.grafica.adicion_conexion(temporal.siguiente.carnet, temporal.carnet)
