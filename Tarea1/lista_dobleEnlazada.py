@@ -23,7 +23,7 @@ class listaDoble:
             self.inicio = self.nuevo_nodo
             
         else:
-            ##retroalimentacion: el nuevo nodo apunta al inicio, el inicio apunta al nuevo nodo y el nuevo nodo se convierte en el inicio
+            ##Recordatorio: el nuevo nodo apunta al inicio, el inicio apunta al nuevo nodo y el nuevo nodo se convierte en el inicio
             self.nuevo_nodo.siguiente = self.inicio
             self.inicio.anterior = self.nuevo_nodo
             self.inicio = self.nuevo_nodo
@@ -34,7 +34,7 @@ class listaDoble:
         if self.inicio is None:
             self.inicio = self.nuevo_nodo
         else:
-            ## se recorre la lista hasta el final, el último nodo apunta al nuevo nodo y el nuevo nodo apunta al último nodo
+            ##Recordatorio: se recorre la lista hasta el final, el último nodo apunta al nuevo nodo y el nuevo nodo apunta al último nodo
             self.temporal = self.inicio
             while self.temporal.siguiente is not None:
                 self.temporal = self.temporal.siguiente
@@ -49,7 +49,7 @@ class listaDoble:
             self.temporal = self.inicio
             while self.temporal is not None:
                 if self.temporal.carnet == carnet:
-                    #si el nodo a eliminar no es el inicio, el nodo.anterior apunta al nodo siguiente, si el nodo a eliminar es el inicio, el inicio apunta al nodo siguiente, si el nodo a eliminar no es el final, el nodo siguiente apunta al nodo anterior
+                    #Recordatorio: si el nodo a eliminar no es el inicio, el nodo.anterior apunta al nodo siguiente, si el nodo a eliminar es el inicio, el inicio apunta al nodo siguiente, si el nodo a eliminar no es el final, el nodo siguiente apunta al nodo anterior
                     if self.temporal.anterior is not None:
                         self.temporal.anterior.siguiente = self.temporal.siguiente
                     else:
@@ -66,15 +66,13 @@ class listaDoble:
             print("None -> None")
         else:
             self.temporal = self.inicio
-            contador = 0
             lista = "None <- "
             while self.temporal is not None:
-                if contador > 0:
+                lista += f"{self.temporal.carnet} "
+                if self.temporal.siguiente is not None:
                     lista += " <-> "
-                lista += f"{self.temporal.carnet}"
-                contador += 1
                 self.temporal = self.temporal.siguiente
-            lista += " -> None"
+            lista += "-> None"
             print(lista)
         
         
