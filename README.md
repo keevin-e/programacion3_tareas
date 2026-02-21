@@ -9,6 +9,10 @@ Desde la raíz del proyecto:
 ```bash
 python3 -m venv .venv
 ```
+### 2) utilizar python 3.x
+```bash
+python 3.10.x
+```
 
 ### 2) Activar el entorno virtual
 
@@ -17,7 +21,6 @@ source .venv/bin/activate
 ```
 
 ### 3) Instalar dependencias
-Si existe `requirements.txt`:
 
 ```bash
 pip install -r requirements.txt
