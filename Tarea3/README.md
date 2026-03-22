@@ -37,6 +37,7 @@ python main.py
 
 - La opción 4 permite cargar valores enteros desde un archivo `.csv`.
 - El archivo debe contener números enteros separados por comas.
+- dentro del menu debe escribir el nombre del archivo con su extension .csv
 - Ejemplo de contenido válido:
 
 ```csv
