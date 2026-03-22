@@ -10,6 +10,8 @@ class arbolBinario:
     #actualiza la grafica del arbol cada vez que se inserta o elimina un nodo
     def actualizar_grafica(self):
         self.grafica.limpiar()
+        if self.raiz is not None:
+            self.grafica.adicion_nodo(self.raiz.valor)
         self.recorrer_arbol(self.raiz)
         self.grafica.guardar(abrir=False)
         
@@ -52,7 +54,7 @@ class arbolBinario:
     def buscar_recursivo(self, nodo_actual, valor):
         if nodo_actual is None:
             return False
-        if nodo_actual.valor == valor:
+        if nodo_actual.valor == valor: 
             return True
         elif valor < nodo_actual.valor:
             return self.buscar_recursivo(nodo_actual.izquierda, valor)
