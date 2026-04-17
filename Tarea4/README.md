@@ -41,7 +41,7 @@ python main.py
 - Ejemplo de contenido válido:
 
 ```csv
-10,5,20,3,7,15,25
+5,7,9,10,20,18,17,16,15,14
 ```
 
 ## Salida gráfica

@@ -25,26 +25,87 @@ class arbolBinario:
                 self.grafica.adicion_nodo(nodo_actual.derecha.valor,nodo_actual.valor,'derecha')
                 self.recorrer_arbol(nodo_actual.derecha)
      
+    # funciones para arboles AVL 
+    def get_altura(self, nodo_actual):
+        if nodo_actual is None:
+            return 0
+        return nodo_actual.altura
+
+    #funcion para actualizar la altura de un nodo despues de una insercion o eliminacion
+    def actualizar_altura(self, nodo_actual):
+        nodo_actual.altura = 1 + max(
+            self.get_altura(nodo_actual.izquierda),
+            self.get_altura(nodo_actual.derecha)
+        )
+
+    #funcion para obtener el factor de equilibrio de un nodo, para determinar si el nodo esta desbalanceado y el tipo de rotacion
+    def get_balance(self, nodo_actual):
+        if nodo_actual is None:
+            return 0
+        return self.get_altura(nodo_actual.izquierda) - self.get_altura(nodo_actual.derecha)
+
+    #Rotación a la derecha: pivote sube y padre baja
+    def rotar_derecha(self, padre): 
+        pivote = padre.izquierda       # Nodo que SUBE
+        subarbol = pivote.derecha      # Lo que se mueve en el rebalanceo
+        pivote.derecha = padre         # pivote SUBE
+        padre.izquierda = subarbol    # padre BAJA
+        self.actualizar_altura(padre)
+        self.actualizar_altura(pivote)
+        return pivote
+
+    #Rotación a la izquierda: pivote sube y padre baja
+    def rotar_izquierda(self, padre):
+        pivote = padre.derecha         # Nodo que SUBE
+        subarbol = pivote.izquierda    # Lo que se mueve en el rebalanceo
+        pivote.izquierda = padre       # pivot SUBE
+        padre.derecha = subarbol      # padre BAJA
+        self.actualizar_altura(padre)
+        self.actualizar_altura(pivote)
+        return pivote
+
+    #funcion para encontrar el nodo con el valor minimo en un subarbol, se utiliza para eliminar nodos con dos hijos, donde se reemplaza el nodo a eliminar por el nodo con el valor minimo del subarbol derecho
+    def encontrar_minimo(self, nodo_actual):
+        actual = nodo_actual
+        while actual.izquierda is not None:
+            actual = actual.izquierda
+        return actual
+
     #inserta un nuevo nodo en el arbol y actualiza la grafica    
     def insertar(self, valor):
-        if self.raiz is None:
-            self.raiz = nodo(valor)
-        else:
-            self.insertar_recursivo(self.raiz, valor)
+        self.raiz = self.insertar_recursivo(self.raiz, valor)
         self.actualizar_grafica()
 
-    #funcion auxiliar para insertar un nuevo nodo en el arbol de forma recursiva
+    #funcion auxiliar para insertar un nuevo nodo en el arbol de forma recursiva con rebalanceo AVL
     def insertar_recursivo(self, nodo_actual, valor):
+        if nodo_actual is None:
+            return nodo(valor)
         if valor < nodo_actual.valor:
-            if nodo_actual.izquierda is None:
-                nodo_actual.izquierda = nodo(valor)
-            else:
-                self.insertar_recursivo(nodo_actual.izquierda, valor)
+            nodo_actual.izquierda = self.insertar_recursivo(nodo_actual.izquierda, valor)
+        elif valor > nodo_actual.valor:
+            nodo_actual.derecha = self.insertar_recursivo(nodo_actual.derecha, valor)
         else:
-            if nodo_actual.derecha is None:
-                nodo_actual.derecha = nodo(valor)
-            else:
-                self.insertar_recursivo(nodo_actual.derecha, valor)
+            return nodo_actual  # valores duplicados no se insertan
+
+        self.actualizar_altura(nodo_actual)
+        balance = self.get_balance(nodo_actual)
+
+        # Caso Izquierda-Izquierda
+        if balance > 1 and valor < nodo_actual.izquierda.valor:
+            return self.rotar_derecha(nodo_actual)
+        # Caso Derecha-Derecha
+        if balance < -1 and valor > nodo_actual.derecha.valor:
+            return self.rotar_izquierda(nodo_actual)
+        # Caso Izquierda-Derecha
+        if balance > 1 and valor > nodo_actual.izquierda.valor:
+            nodo_actual.izquierda = self.rotar_izquierda(nodo_actual.izquierda)
+            return self.rotar_derecha(nodo_actual)
+        # Caso Derecha-Izquierda
+        if balance < -1 and valor < nodo_actual.derecha.valor:
+            nodo_actual.derecha = self.rotar_derecha(nodo_actual.derecha)
+            return self.rotar_izquierda(nodo_actual)
+
+        return nodo_actual
     
     #funcion principal para buscar un valor en el arbol, llama a la funcion auxiliar de forma recursiva
     def buscar(self, valor):
@@ -66,7 +127,7 @@ class arbolBinario:
         self.raiz = self.eliminar_recursivo(self.raiz, valor)
         self.actualizar_grafica()
 
-    #funcion auxiliar para eliminar un nodo del arbol de forma recursiva
+    #funcion auxiliar para eliminar un nodo del arbol de forma recursiva con rebalanceo AVL
     def eliminar_recursivo(self, nodo_actual, valor):
         if nodo_actual is None:
             return nodo_actual
@@ -82,6 +143,25 @@ class arbolBinario:
             temp = self.encontrar_minimo(nodo_actual.derecha)
             nodo_actual.valor = temp.valor
             nodo_actual.derecha = self.eliminar_recursivo(nodo_actual.derecha, temp.valor)
+
+        self.actualizar_altura(nodo_actual)
+        balance = self.get_balance(nodo_actual)
+
+        # Caso Izquierda-Izquierda
+        if balance > 1 and self.get_balance(nodo_actual.izquierda) >= 0:
+            return self.rotar_derecha(nodo_actual)
+        # Caso Izquierda-Derecha
+        if balance > 1 and self.get_balance(nodo_actual.izquierda) < 0:
+            nodo_actual.izquierda = self.rotar_izquierda(nodo_actual.izquierda)
+            return self.rotar_derecha(nodo_actual)
+        # Caso Derecha-Derecha
+        if balance < -1 and self.get_balance(nodo_actual.derecha) <= 0:
+            return self.rotar_izquierda(nodo_actual)
+        # Caso Derecha-Izquierda
+        if balance < -1 and self.get_balance(nodo_actual.derecha) > 0:
+            nodo_actual.derecha = self.rotar_derecha(nodo_actual.derecha)
+            return self.rotar_izquierda(nodo_actual)
+
         return nodo_actual
     
     #funcion para Carga de archivo .csv donde crea un arbol binario con los valores del archivo y actualiza la grafica

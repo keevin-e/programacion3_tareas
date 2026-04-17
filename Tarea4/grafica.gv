@@ -1,0 +1,13 @@
+digraph G {
+	rankdir=TB
+	10
+	10 -> 7 [headport=n tailport=sw]
+	7 -> 5 [headport=n tailport=sw]
+	7 -> 9 [headport=n tailport=se]
+	10 -> 16 [headport=n tailport=se]
+	16 -> 15 [headport=n tailport=sw]
+	15 -> 14 [headport=n tailport=sw]
+	16 -> 18 [headport=n tailport=se]
+	18 -> 17 [headport=n tailport=sw]
+	18 -> 20 [headport=n tailport=se]
+}
