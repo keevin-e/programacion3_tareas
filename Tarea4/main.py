@@ -1,7 +1,7 @@
-from arbol_binario_avl import arbolBinario
+from arbol_binario_avl import arbolAVL
 
 if __name__ == "__main__":
-    arbol = arbolBinario()
+    arbol = arbolAVL()
     while True:
         print("")
         print("---- Menu ----")
